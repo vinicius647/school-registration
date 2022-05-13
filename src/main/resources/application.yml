@@ -1,0 +1,25 @@
+server:
+  port: 8282
+spring:
+  application:
+    name: school-registration
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/school
+    username: root
+    password: adminadmin
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 120000
+      max-lifetime: 30000
+      auto-commit: true
+springdoc:
+  show-actuator: true
+  api-docs:
+    path: school-registration/v1/api-docs

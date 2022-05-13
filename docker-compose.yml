@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+    school:
+        image: helpxml/school-registration:0.0.1-SNAPSHOT
+        ports:
+            - 8282:8282
+        depends_on:
+            - mysqlserver
+        environment:
+            SPRING.DATASOURCE.URL: jdbc:mysql://mysqlserver:3306/school
+        networks:
+            - school-network
+    mysqlserver:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: adminadmin
+            MYSQL_DATABASE: school
+        ports:
+            - 3306:3306
+        restart: always
+        networks:
+            - school-network
+networks:
+    school-network:
+        driver: bridge
