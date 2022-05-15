@@ -17,6 +17,10 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: adminadmin
             MYSQL_DATABASE: school
+            MYSQL_USER: docker
+            MYSQL_TCP_PORT: 3306
+        expose:
+            - 3306
         ports:
             - 3306:3306
         restart: always
