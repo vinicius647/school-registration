@@ -28,6 +28,10 @@ All usernames and passwords are case sensitives and are in plaintext.
 ### Courses
 There are 7 students already created, COURSE-1...COURSE-7
 
-## How to run it
+### How to run it
 * Run the command: docker-compose up -d
 * To stop: docker-compose down
+
+### MAC WITH ARM ARCHITECTURE
+Might be necessary to add new parameter in mysqlserver on docker-compose.yml
+* platform: linux/x86_64
