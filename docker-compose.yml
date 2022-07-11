@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
     school:
-        image: helpxml/school-registration:0.0.1-SNAPSHOT
+        image: helpxml/school-registration:0.0.2-SNAPSHOT
         ports:
             - 8282:8282
         depends_on:
