@@ -4,6 +4,7 @@ import com.project.school.schoolregistration.entity.Course;
 import com.project.school.schoolregistration.model.CourseDto;
 import com.project.school.schoolregistration.repository.CourseRepository;
 import com.project.school.schoolregistration.service.CourseServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,22 +20,22 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class CourseServiceTest {
 
+    private Course course;
     @InjectMocks
     private CourseServiceImpl service;
     @Mock
     private CourseRepository repository;
 
-    private Course courseFactory() {
-        var course = new Course();
-        course.setId(1);
-        course.setCourseName("Course Test");
-        return course;
+    @BeforeEach
+    public void courseFactory() {
+        this.course = new Course();
+        this.course.setId(1);
+        this.course.setCourseName("Course Test");
     }
 
     @Test
     void shouldCreateNewCourse() throws Exception {
         var dto = CourseDto.builder().courseName("Course Test").build();
-        var course = courseFactory();
 
         when(repository.saveAndFlush(any())).thenReturn(course);
         var courseCreated = service.create(dto);
@@ -48,7 +49,6 @@ public class CourseServiceTest {
     @Test
     void shouldUpdateCourse() throws Exception {
         var dto = CourseDto.builder().id(1).courseName("Course Test").build();
-        var course = courseFactory();
 
         when(repository.saveAndFlush(any())).thenReturn(course);
         service.update(dto);
@@ -59,7 +59,7 @@ public class CourseServiceTest {
     @Test
     void shouldListCourseByStudent() throws Exception {
         int studentId = 1;
-        var listCourse = Arrays.asList(courseFactory());
+        var listCourse = Arrays.asList(this.course);
 
         when(repository.courseByStudent(anyInt())).thenReturn(listCourse);
         var listReturned= service.listCourseByStudent(studentId);
@@ -71,7 +71,7 @@ public class CourseServiceTest {
 
     @Test
     void shouldListWithoutStudent() throws Exception {
-        var listCourse = Arrays.asList(courseFactory());
+        var listCourse = Arrays.asList(this.course);
 
         when(repository.coursesWithoutStudent()).thenReturn(listCourse);
         var listReturned= service.listCoursesWithoutStudents();
@@ -83,8 +83,7 @@ public class CourseServiceTest {
 
     @Test
     void shouldFindById() throws Exception {
-        var course = courseFactory();
-        var optCourse = Optional.of(course);
+        var optCourse = Optional.of(this.course);
 
         when(repository.findById(anyInt())).thenReturn(optCourse);
         var courseFound= service.findById(course.getId());

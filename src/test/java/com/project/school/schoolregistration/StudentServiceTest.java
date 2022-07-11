@@ -4,6 +4,7 @@ import com.project.school.schoolregistration.entity.Student;
 import com.project.school.schoolregistration.model.StudentDto;
 import com.project.school.schoolregistration.repository.StudentRepository;
 import com.project.school.schoolregistration.service.StudentServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,25 +20,26 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class StudentServiceTest {
-
     @InjectMocks
     private StudentServiceImpl service;
+
     @Mock
     private StudentRepository repository;
 
-    private Student studentFactory() {
-        var student = new Student();
+    private Student student;
+
+    @BeforeEach
+    public void studentFactory() {
+        student = new Student();
         student.setId(1);
         student.setName("Student-1");
         student.setUsername("Username");
         student.setPassword("Password");
-        return student;
     }
 
     @Test
     void shouldCreateNewStudent() throws Exception {
         var dto = StudentDto.builder().name("Student-1").password("Password").username("Username").build();
-        var student = studentFactory();
 
         when(repository.saveAndFlush(any())).thenReturn(student);
         var studentCreated = service.create(dto);
@@ -51,7 +53,6 @@ public class StudentServiceTest {
     @Test
     void shouldUpdateStudent() throws Exception {
         var dto = StudentDto.builder().id(1).name("Student-1").password("Password").username("Username").build();
-        var student = studentFactory();
 
         when(repository.saveAndFlush(any())).thenReturn(student);
         service.update(dto);
@@ -62,7 +63,7 @@ public class StudentServiceTest {
     @Test
     void shouldListStudentByCourse() throws Exception {
         int courseId = 1;
-        var listStudent = Arrays.asList(studentFactory());
+        var listStudent = Arrays.asList(student);
 
         when(repository.studentByCourse(anyInt())).thenReturn(listStudent);
         var listReturned= service.listStudentByCourse(courseId);
@@ -74,7 +75,7 @@ public class StudentServiceTest {
 
     @Test
     void shouldListStudentsWithoutCourse() throws Exception {
-        var listStudent = Arrays.asList(studentFactory());
+        var listStudent = Arrays.asList(student);
 
         when(repository.studentsWithoutCourse()).thenReturn(listStudent);
         var listReturned= service.listStudentsWithoutCourses();
@@ -86,7 +87,6 @@ public class StudentServiceTest {
 
     @Test
     void shouldFindById() throws Exception {
-        var student = studentFactory();
         var optStudent = Optional.of(student);
 
         when(repository.findById(anyInt())).thenReturn(optStudent);
